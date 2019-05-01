@@ -1,4 +1,4 @@
-# esx_CommunityService
+# ESX_CommunityService
 
 An alternative form of punishment and social correction to jail. With this script, you can now send criminals in the central square, to provide community service by cleaning and gardening. Try to escape it and you will get your service extended!
 
@@ -54,8 +54,8 @@ end
 
 --add this function
 function SendToCommunityService(player)
-	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'MENU ÊÏÉÍÙÍÉÊÇÓ ÅÑÃÁÓÉÁÓ', {
-		title = "MENU ÊÏÉÍÙÍÉÊÇÓ ÅÑÃÁÓÉÁÓ",
+	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'Community Service Menu', {
+		title = "Community Service Menu",
 	}, function (data2, menu)
 		local community_services_count = tonumber(data2.value)
 		
