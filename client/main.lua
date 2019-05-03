@@ -19,6 +19,12 @@ local actionsRemaining = 0
 local availableActions = {}
 local disable_actions = false
 
+local vassoumodel = "prop_tool_broom"
+local vassour_net = nil
+
+local spatulamodel = "bkr_prop_coke_spatula_04"
+local spatula_net = nil
+
 Citizen.CreateThread(function()
 	while ESX == nil do
 		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
@@ -149,21 +155,43 @@ Citizen.CreateThread(function()
 						actionsRemaining = actionsRemaining - 1
 
 						if (tmp_action.type == "cleaning") then
+							local cSCoords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(PlayerId()), 0.0, 0.0, -5.0)
+							local vassouspawn = CreateObject(GetHashKey(vassoumodel), cSCoords.x, cSCoords.y, cSCoords.z, 1, 1, 1)
+							local netid = ObjToNet(vassouspawn)
 
 							ESX.Streaming.RequestAnimDict("amb@world_human_janitor@male@idle_a", function()
 									TaskPlayAnim(PlayerPedId(), "amb@world_human_janitor@male@idle_a", "idle_a", 8.0, -8.0, -1, 0, 0, false, false, false)
+									AttachEntityToEntity(vassouspawn,GetPlayerPed(PlayerId()),GetPedBoneIndex(GetPlayerPed(PlayerId()), 28422),-0.005,0.0,0.0,360.0,360.0,0.0,1,1,0,1,0,1)
+									vassour_net = netid
+								end)
+
+								ESX.SetTimeout(10000, function()
+									disable_actions = false
+									DetachEntity(NetToObj(vassour_net), 1, 1)
+									DeleteEntity(NetToObj(vassour_net))
+									vassour_net = nil
+									ClearPedTasks(PlayerPedId())
 								end)
 
 						end
 
 						if (tmp_action.type == "gardening") then
-							TaskStartScenarioInPlace(PlayerPedId(), "world_human_gardener_plant", 0, false)
-						end
+							local cSCoords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(PlayerId()), 0.0, 0.0, -5.0)
+							local spatulaspawn = CreateObject(GetHashKey(spatulamodel), cSCoords.x, cSCoords.y, cSCoords.z, 1, 1, 1)
+							local netid = ObjToNet(spatulaspawn)
 
-						ESX.SetTimeout(10000, function()
-    							disable_actions = false
-    							ClearPedTasks(PlayerPedId())
-						end)
+							TaskStartScenarioInPlace(PlayerPedId(), "world_human_gardener_plant", 0, false)
+							AttachEntityToEntity(spatulaspawn,GetPlayerPed(PlayerId()),GetPedBoneIndex(GetPlayerPed(PlayerId()), 28422),-0.005,0.0,0.0,190.0,190.0,-50.0,1,1,0,1,0,1)
+							spatula_net = netid
+
+							ESX.SetTimeout(14000, function()
+								disable_actions = false
+								DetachEntity(NetToObj(spatula_net), 1, 1)
+								DeleteEntity(NetToObj(spatula_net))
+								spatula_net = nil
+								ClearPedTasks(PlayerPedId())
+							end)
+						end
 
 						goto start_over
 					end
