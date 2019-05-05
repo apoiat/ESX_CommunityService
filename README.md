@@ -42,6 +42,7 @@ Example in `esx_policejob: client/main.lua`:
 
 ```lua
 {label = _U('fine'),			value = 'fine'},
+{label = _U('unpaid_bills'),	value = 'unpaid_bills'},
 -add code below (don't forget to add ',' before new row)
 {label = "Community Service",	value = 'communityservice'}
 		
