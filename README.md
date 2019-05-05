@@ -44,7 +44,7 @@ Example in `esx_policejob: client/main.lua`:
 -- ADDITION [1]
 {label = _U('fine'),			value = 'fine'},
 {label = _U('unpaid_bills'),	value = 'unpaid_bills'},
--add code below (don't forget to add ',' before new row)
+-- add code below (don't forget to add ',' before new row)
 {label = "Community Service",	value = 'communityservice'}
 
 
@@ -58,7 +58,7 @@ end
 
 
 -- ADDITION [3]
---add this function
+-- add this function
 function SendToCommunityService(player)
 	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'Community Service Menu', {
 		title = "Community Service Menu",
