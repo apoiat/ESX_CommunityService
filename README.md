@@ -78,7 +78,7 @@ function SendToCommunityService(player)
 	end)
 end
 ```
-#Creditos
+## Creditos
 
 - [Ap. Iatridis](https://github.com/apoiat) - Desenvolvedor do client_scripts
 - [Renildo Marcio](https://github.com/psycodeliccircus) - Tradução e implementações
