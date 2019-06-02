@@ -7,12 +7,12 @@ TriggerEvent('es:addGroupCommand', 'comserv', 'admin', function(source, args, us
 	if args[1] and GetPlayerName(args[1]) ~= nil and tonumber(args[2]) then
 		TriggerEvent('esx_communityservice:sendToCommunityService', tonumber(args[1]), tonumber(args[2]))
 	else
-		TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Invalid player ID or actions count.' } } )
+		TriggerClientEvent('chat:addMessage', source, { args = { _U('system_msn'), _U('invalid_player_id_or_actions') } } )
 	end
 end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
-end, {help = "Give player community service", params = {{name = "id", help = "target id"}, {name = "actions", help = "actions count [suggested: 10-40]"}}})
-
+	TriggerClientEvent('chat:addMessage', source, { args = { _U('system_msn'), _U('insufficient_permissions') } })
+end, {help = _U('give_player_community'), params = {{name = "id", help = _U('target_id')}, {name = "actions", help = _U('action_count_suggested')}}})
+_U('system_msn')
 
 
 TriggerEvent('es:addGroupCommand', 'endcomserv', 'admin', function(source, args, user)
@@ -20,14 +20,14 @@ TriggerEvent('es:addGroupCommand', 'endcomserv', 'admin', function(source, args,
 		if GetPlayerName(args[1]) ~= nil then
 			TriggerEvent('esx_communityservice:endCommunityServiceCommand', tonumber(args[1]))
 		else
-			TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Invalid player ID!' } } )
+			TriggerClientEvent('chat:addMessage', source, { args = { _U('system_msn'), _U('invalid_player_id')  } } )
 		end
 	else
 		TriggerEvent('esx_communityservice:endCommunityServiceCommand', source)
 	end
 end, function(source, args, user)
-	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
-end, {help = "Unjail people from jail", params = {{name = "id", help = "target id"}}})
+	TriggerClientEvent('chat:addMessage', source, { args = { _U('system_msn'), _U('insufficient_permissions') } })
+end, {help = _U('unjail_people'), params = {{name = "id", help = _U('target_id')}}})
 
 
 
@@ -64,7 +64,7 @@ AddEventHandler('esx_communityservice:completeService', function()
 			MySQL.Async.execute('UPDATE communityservice SET actions_remaining = actions_remaining - 1 WHERE identifier = @identifier', {
 				['@identifier'] = identifier
 			})
-		else 
+		else
 			print ("ESX_CommunityService :: Problem matching player identifier in database to reduce actions.")
 		end
 	end)
@@ -88,7 +88,7 @@ AddEventHandler('esx_communityservice:extendService', function()
 				['@identifier'] = identifier,
 				['@extension_value'] = Config.ServiceExtensionOnEscape
 			})
-		else 
+		else
 			print ("ESX_CommunityService :: Problem matching player identifier in database to reduce actions.")
 		end
 	end)
@@ -119,7 +119,7 @@ AddEventHandler('esx_communityservice:sendToCommunityService', function(target, 
 			})
 		end
 	end)
-	
+
 	TriggerClientEvent('chat:addMessage', -1, { args = { _U('judge'), _U('comserv_msg', GetPlayerName(target), actions_count) }, color = { 147, 196, 109 } })
 	TriggerClientEvent('esx_policejob:unrestrain', target)
 	TriggerClientEvent('esx_communityservice:inCommunityService', target, actions_count)

@@ -1,10 +1,10 @@
 local Keys = {
-  ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
-  ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
+  ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
+  ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
   ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
   ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
   ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-  ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
+  ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
   ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
   ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
   ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
@@ -40,7 +40,7 @@ end)
 
 
 function FillActionTable(last_action)
-	
+
 	while #availableActions < 5 do
 
 		local service_does_not_exist = true
@@ -77,7 +77,7 @@ AddEventHandler('esx_communityservice:inCommunityService', function(actions_rema
 	end
 
 	actionsRemaining = actions_remaining
-	
+
 	FillActionTable()
 	print(":: Available Actions: " .. #availableActions)
 
@@ -86,7 +86,7 @@ AddEventHandler('esx_communityservice:inCommunityService', function(actions_rema
 	ApplyPrisonerSkin()
 	ESX.Game.Teleport(playerPed, Config.ServiceLocation)
 	isSentenced = true
-	communityServiceFinished = false		
+	communityServiceFinished = false
 
 	while actionsRemaining > 0 and communityServiceFinished ~= true do
 
@@ -103,7 +103,7 @@ AddEventHandler('esx_communityservice:inCommunityService', function(actions_rema
 				TriggerServerEvent('esx_communityservice:extendService')
 				actionsRemaining = actionsRemaining + Config.ServiceExtensionOnEscape
 		end
-	
+
 	end
 
 	TriggerServerEvent('esx_communityservice:finishCommunityService', -1)
@@ -132,8 +132,8 @@ Citizen.CreateThread(function()
 		Citizen.Wait(1)
 
 		if actionsRemaining > 0 and isSentenced then
-			draw2dText( _U('remaining_msg', ESX.Math.Round(actionsRemaining)), { 0.175, 0.955 } )	
-			DrawAvailableActions()	
+			draw2dText( _U('remaining_msg', ESX.Math.Round(actionsRemaining)), { 0.175, 0.955 } )
+			DrawAvailableActions()
 			DisableViolentActions()
 
 			local pCoords    = GetEntityCoords(PlayerPedId())
@@ -142,8 +142,8 @@ Citizen.CreateThread(function()
 				local distance = GetDistanceBetweenCoords(pCoords, availableActions[i].coords, true)
 
 				if distance < 1.5 then
-					DisplayHelpText("Press ~INPUT_CONTEXT~ to start.")
-					
+					DisplayHelpText(_U('press_to_start'))
+
 
 					if(IsControlJustReleased(1, 38))then
 						tmp_action = availableActions[i]
@@ -216,7 +216,7 @@ function RemoveAction(action)
 
 	if action_pos ~= -1 then
 		table.remove(availableActions, action_pos)
-	else 
+	else
 		print("User tried to remove an unavailable action")
 	end
 
@@ -255,11 +255,11 @@ end
 function DisableViolentActions()
 
 	local playerPed = PlayerPedId()
-	
+
 	if disable_actions == true then
 		DisableAllControlActions(0)
 	end
-	
+
 	RemoveAllPedWeapons(playerPed, true)
 
 	DisableControlAction(2, 37, true) -- disable weapon wheel (Tab)
@@ -268,11 +268,11 @@ function DisableViolentActions()
     DisableControlAction(0, 140, true)
 	DisableControlAction(0, 141, true)
 	DisableControlAction(0, 142, true)
-	
+
 	if IsDisabledControlJustPressed(2, 37) then --if Tab is pressed, send error message
 		SetCurrentPedWeapon(playerPed,GetHashKey("WEAPON_UNARMED"),true) -- if tab is pressed it will set them to unarmed (this is to cover the vehicle glitch until I sort that all out)
 	end
-	
+
 	if IsDisabledControlJustPressed(0, 106) then --if LeftClick is pressed, send error message
 		SetCurrentPedWeapon(playerPed,GetHashKey("WEAPON_UNARMED"),true) -- If they click it will set them to unarmed
 	end
@@ -287,7 +287,7 @@ function ApplyPrisonerSkin()
 	if DoesEntityExist(playerPed) then
 
 		Citizen.CreateThread(function()
-		
+
 			TriggerEvent('skinchanger:getSkin', function(skin)
 				if skin.sex == 0 then
 					TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms['prison_wear'].male)
@@ -295,14 +295,14 @@ function ApplyPrisonerSkin()
 					TriggerEvent('skinchanger:loadClothes', skin, Config.Uniforms['prison_wear'].female)
 				end
 			end)
-			
+
 		SetPedArmour(playerPed, 0)
 		ClearPedBloodDamage(playerPed)
 		ResetPedVisibleDamage(playerPed)
 		ClearPedLastWeaponDamage(playerPed)
-		ResetPedMovementClipset(playerPed, 0)		
+		ResetPedMovementClipset(playerPed, 0)
 
-		end)		
+		end)
 	end
 end
 
