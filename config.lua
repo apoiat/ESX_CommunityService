@@ -1,7 +1,7 @@
 Config = {}
 
 -- # Locale to be used. You can create your own by simple copying the 'en' and translating the values.
-Config.Locale       				= 'en'
+Config.Locale       				= 'en' -- Traduções disponives en / br
 
 -- # By how many services a player's community service gets extended if he tries to escape
 Config.ServiceExtensionOnEscape		= 8
