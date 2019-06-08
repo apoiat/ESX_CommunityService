@@ -1,74 +1,72 @@
 # ESX_CommunityService
 
-Uma forma alternativa de punição e correção social para a cadeia.
-Com este script, agora você pode enviar criminosos na praça central para fornecer serviços comunitários através de limpeza e jardinagem.
-Tente escapar e você terá seu serviço estendido!
+An alternative form of punishment and social correction to jail. With this script, you can now send criminals in the central square, to provide community service by cleaning and gardening. Try to escape it and you will get your service extended!
 
 
-### Requisitos
+### Requirements
 * ESX
 * ESX skinchanger
-  * [skinchanger](https://github.com/ESX-Brasil/skinchanger)
+  * [skinchanger](https://github.com/ESX-Org/skinchanger)
 
-## Download e Instalação
+## Download & Installation
 
-### Usando o Git
+### Using Git
 ```
 cd resources
-git clone https://github.com/ESX-Brasil/esx_communityservice [esx]/esx_communityservice
+git clone https://github.com/apoiat/esx_communityservice [esx]/esx_communityservice
 ```
 
 ### Manually
-- Download https://github.com/ESX-Brasil/esx_communityservice/archive/master.zip
-- Coloque-o no diretório `[esx]`
+- Download https://github.com/apoiat/esx_communityservice/archive/master.zip
+- Put it in the `[esx]` directory
 
 
-## Instalação
-- Importe `esx_communityservice.sql` em seu banco de dados
-- Adicione isto em seu server.cfg:
+## Installation
+- Import `esx_communityservice.sql` in your database
+- Add this in your server.cfg :
 
 ```
 start esx_communityservice
 ```
-## Como aplicar o serviço comunitário.
+## How to apply community service.
 
-- Use o gatilho do servidor `esx_communityservice: sendToCommunityService (target, service_count)`.
-- Use o comando `/comserv player_id service_count` (somente admins).
-- Use o `/endcomserv player_id` para terminar o serviço da comunidade de um jogador (somente admins).
+- Use the `esx_communityservice:sendToCommunityService(target, service_count)` server trigger.
+- Use the `/comserv player_id service_count` command (only admins).
+- Use the `/endcomserv player_id` to finish a player's community service (only admins).
 
 
 
-# Como adicionar ao menu policial.
+# How to add to policejob menu.
 
-Exemplo em `esx_policejob: client/main.lua`:
+Example in `esx_policejob: client/main.lua`:
 
 ```lua
--- ADIÇÃO [1]
+-- ADDITION [1]
 {label = _U('fine'),			value = 'fine'},
 {label = _U('unpaid_bills'),	value = 'unpaid_bills'},
--- adicione código abaixo (não se esqueça de adicionar ',' antes da nova linha)
-{label = "Serviço comunitário",	value = 'communityservice'}
+-- add code below (don't forget to add ',' before new row)
+{label = "Community Service",	value = 'communityservice'}
 
 
--- ADIÇÃO [2]
+-- ADDITION [2]
 elseif action == 'unpaid_bills' then
 	OpenUnpaidBillsMenu(closestPlayer)
--- adicione o código abaixo
+-- add code below
 elseif action == 'communityservice' then
 	SendToCommunityService(GetPlayerServerId(closestPlayer))
 end
 
 
--- ADIÇÃO [3]
--- adicionar esta função
+-- ADDITION [3]
+-- add this function
 function SendToCommunityService(player)
 	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'Community Service Menu', {
-		title = "Menu de serviço comunitário",
+		title = "Community Service Menu",
 	}, function (data2, menu)
 		local community_services_count = tonumber(data2.value)
-
+		
 		if community_services_count == nil then
-			ESX.ShowNotification('Contagem de serviços inválidos.')
+			ESX.ShowNotification('Invalid services count.')
 		else
 			TriggerServerEvent("esx_communityservice:sendToCommunityService", player, community_services_count)
 			menu.close()
@@ -78,14 +76,12 @@ function SendToCommunityService(player)
 	end)
 end
 ```
-## Creditos
 
-- [Ap. Iatridis](https://github.com/apoiat) - Desenvolvedor do client_scripts
-- [Renildo Marcio](https://github.com/psycodeliccircus) - Tradução e implementações
 
 # Legal
 ### License
-ESX_CommunityService - from ESX Brasil
+ESX_CommunityService - A community service script for fivem servers.
+
 Copyright (C) 2018-2019 Apostolos Iatridis
 
 This program Is free software: you can redistribute it And/Or modify it under the terms Of the GNU General Public License As published by the Free Software Foundation, either version 3 Of the License, Or (at your option) any later version.
